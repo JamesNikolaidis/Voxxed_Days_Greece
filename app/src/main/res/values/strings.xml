@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Voxxed Days</string>
+    <string name="app_name_thessaloniki">Voxxed Days Thessaloniki</string>
+    <string name="app_name_athens">Voxxed Days Athens</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="AthensErrorMessage">The Chosen Voxxed Days has passed out.\nIf you want to check the archive of past event please
+    pick the year.</string>
+    <string name="athernsErrorTitle">Not Available Voxxed Day</string>
+    <string name="select_year">Select Year</string>
+    <string name="speakers">Speakers</string>
+    <string name="sessions">Sessions</string>
+    <string name="keynote">Keynotes</string>
+    <string name="vote">Voting</string>
+
+
+
+</resources>

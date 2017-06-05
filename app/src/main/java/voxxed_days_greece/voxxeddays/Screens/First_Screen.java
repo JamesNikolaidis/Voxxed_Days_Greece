@@ -76,7 +76,7 @@ public class First_Screen extends AppCompatActivity {
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
               editor.putInt("state_number",position);
               editor.commit();
-              nextScreen = new Intent(getApplicationContext(),thessaloniki_main_screen.class);
+              nextScreen = new Intent(getApplicationContext(),main_screen.class);
               startActivity(nextScreen);
 
 

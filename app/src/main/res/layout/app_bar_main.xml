@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="voxxed_days_greece.voxxeddays.Screens.thessaloniki_main_screen">
+    tools:context="voxxed_days_greece.voxxeddays.Screens.main_screen">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -3,40 +3,28 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@drawable/logo_layout1">
+    android:background="@drawable/wow">
 
   <LinearLayout
+      android:id="@+id/FirstScreenLayout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:id="@+id/FirstScreenLayout"
-      android:gravity="center"
       android:layout_marginTop="40dp"
-      android:orientation="vertical">
+      android:gravity="center"
+      android:orientation="horizontal">
 
-      <Button
-          android:layout_margin="30dp"
-          android:id="@+id/VoxxedDaysAthens"
-          android:layout_gravity="center_vertical|center_horizontal"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textAllCaps="false"
-          android:textColor="@android:color/white"
-          android:textSize="20sp"
-          android:padding="10dp"
-          android:background="@drawable/button_shape"
-          android:text="VOXXED DAYS ATHENS"/>
 
-      <Button
-          android:layout_gravity="center_vertical|center_horizontal"
-          android:id="@+id/VoxxedDaysThessaloniki"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textAllCaps="false"
-          android:textColor="@android:color/white"
-          android:textSize="20sp"
-          android:padding="10dp"
-          android:background="@drawable/button_shape"
-          android:text="VOXXED DAYS THESSALONIKI"/>
+    <TextView
+        android:id="@+id/StateSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/textviewshape"
+        android:gravity="right"
+        android:padding="5dp"
+        android:text="Select State \u21D3"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
 
   </LinearLayout>
 

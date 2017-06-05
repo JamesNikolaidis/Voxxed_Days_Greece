@@ -1,5 +1,7 @@
 package voxxed_days_greece.voxxeddays.Screens;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -9,14 +11,25 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import voxxed_days_greece.voxxeddays.R;
 
-public class thessaloniki_main_screen extends AppCompatActivity
+public class main_screen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    TextView mStateName;
+    private SharedPreferences sharedPreferences;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +37,10 @@ public class thessaloniki_main_screen extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        this.setTitle(R.string.app_name_thessaloniki);
+        sharedPreferences = getSharedPreferences(First_Screen.STATE_SELECTION,MODE_PRIVATE);
+        setTitle(R.string.app_name);
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +58,34 @@ public class thessaloniki_main_screen extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                SetTitle((TextView)drawerView.findViewById(R.id.voxxed_state_name),(ImageView)drawerView.findViewById(R.id.stateImageView));
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View vi = inflater.inflate(R.layout.nav_header_main, null); //log.xml is your file.
+
+
+
     }
 
     @Override
@@ -101,4 +145,54 @@ public class thessaloniki_main_screen extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+
+    public void SetTitle(TextView stateName,ImageView imageView){
+
+        switch (sharedPreferences.getInt(First_Screen.STATE_NUMBER,-1)){
+
+            case 0:
+                imageView.setImageResource(R.drawable.voxxed_days_thessaloniki_menu_icon);
+                stateName.setText(R.string.app_name_thessaloniki);
+                setTitle(R.string.app_name_thessaloniki);
+                break;
+            case 1:
+                imageView.setImageResource(R.drawable.acropolis_ico);
+                stateName.setText(R.string.app_name_athens);
+                setTitle(R.string.app_name_athens);
+                break;
+            case 2:
+                imageView.setImageResource(R.drawable.volos3);
+                stateName.setText(R.string.app_name_volos);
+                setTitle(R.string.app_name_volos);
+                break;
+            case 3:
+                imageView.setImageResource(R.drawable.patra_ico);
+                stateName.setText(R.string.app_name_patra);
+                setTitle(R.string.app_name_patra);
+                break;
+            case 4:
+                imageView.setImageResource(R.drawable.crete_ico_v2);
+                stateName.setText(R.string.app_name_crete);
+                setTitle(R.string.app_name_crete);
+                break;
+            case 5:
+                imageView.setImageResource(R.drawable.piraeus_ico);
+                stateName.setText(R.string.app_name_piraeus);
+                setTitle(R.string.app_name_piraeus);
+                break;
+            default:
+                setTitle("Error");
+                break;
+
+
+        }
+    }
+
+
+
+
+
 }

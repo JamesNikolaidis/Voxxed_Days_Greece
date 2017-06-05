@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/VoxxedDays.iml" filepath="$PROJECT_DIR$/VoxxedDays.iml" />
+      <module fileurl="file://C:\Users\James Nikolaidis\Desktop\Voxxed_Days_Greece\VoxxedDays.iml" filepath="C:\Users\James Nikolaidis\Desktop\Voxxed_Days_Greece\VoxxedDays.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Voxxed_Days_Greece.iml" filepath="$PROJECT_DIR$/Voxxed_Days_Greece.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

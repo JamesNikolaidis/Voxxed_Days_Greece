@@ -1,20 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_screen_relative"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="voxxed_days_greece.voxxeddays.Screens.thessaloniki_main_screen"
+    tools:context="voxxed_days_greece.voxxeddays.Screens.main_screen"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ViewFlipper
+        android:id="@+id/imageSlider"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="?attr/colorPrimary"
+       >
 
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/voxxed_ico1" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/voxxed_ico2" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/voxxed_ico3" />
+
+    </ViewFlipper>
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:id="@+id/message_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <TextView
+
+            android:id="@+id/message_body"
+            android:layout_marginLeft="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:gravity="left"
+            android:text="The Voxxed Days of Thessaloniki is organized for two years in a row in the Thessaloniki.Thessaloniki has a number of great museums , status and sights with the most popular the White Tower.\nFor more information About Thessaloniki you can find at thessaloniki.com.
+From the menu on the left you can navigate to the applications features."/>
+
+
+    </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

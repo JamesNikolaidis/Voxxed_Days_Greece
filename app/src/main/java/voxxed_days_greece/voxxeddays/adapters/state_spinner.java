@@ -1,4 +1,4 @@
-package voxxed_days_greece.voxxeddays.ADAPTERS;
+package voxxed_days_greece.voxxeddays.adapters;
 
 import android.app.Activity;
 import android.content.Context;

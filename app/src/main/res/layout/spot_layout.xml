@@ -3,7 +3,7 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@drawable/wow">
+    android:background="@drawable/acr4">
 
   <LinearLayout
       android:id="@+id/FirstScreenLayout"

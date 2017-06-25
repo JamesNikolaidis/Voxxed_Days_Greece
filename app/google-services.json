@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "351139263004",
+    "firebase_url": "https://voxxed-days-greece.firebaseio.com",
+    "project_id": "voxxed-days-greece",
+    "storage_bucket": "voxxed-days-greece.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351139263004:android:5ebbbb7510b22dfa",
+        "android_client_info": {
+          "package_name": "voxxed_days_greece.voxxeddays"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351139263004-1m70imv514fr7ilc2e356bamrr59qevs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU7-J6zZFY8vjMlDF4Wain4zz1TW9tXdQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

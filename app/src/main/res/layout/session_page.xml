@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar1"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/session_title"
+        android:text="The title is here"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25dp"/>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/session_item"
+            android:padding="4dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_gravity="left"
+                android:src="@drawable/speech_content" />
+
+            <TextView
+                android:padding="5dp"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/session_brief"
+                android:layout_margin="5dp"
+                android:text="Here it will be the description" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@drawable/session_item"
+            android:padding="4dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_gravity="left"
+                android:src="@drawable/conference_room" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/session_room"
+                android:gravity="center|left"
+                android:layout_margin="5dp"
+                android:text="Here it will be the room" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:background="@drawable/session_item"
+            android:paddingTop="7dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/speaker_for_session" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/session_speaker"
+                android:gravity="center|left"
+                android:text="Here it will be the speaker" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:background="@drawable/session_item"
+
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_gravity="left"
+                android:src="@drawable/time" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/session_time"
+                android:gravity="center|left"
+                android:text="Here it will be the speaker" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+</LinearLayout>

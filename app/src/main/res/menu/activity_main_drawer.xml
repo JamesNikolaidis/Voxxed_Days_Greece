@@ -3,33 +3,37 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/speakerss"
+            android:id="@+id/speakers"
             android:icon="@drawable/speakers"
             android:title="@string/speakers" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/sessions"
             android:icon="@drawable/sessions"
             android:title="@string/sessions" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/mySchedule"
+            android:icon="@drawable/sc"
+            android:title="@string/schedule" />
+        <item
+            android:id="@+id/keynotes"
             android:icon="@drawable/keynotes"
             android:title="@string/keynote" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/voting"
             android:icon="@drawable/vote"
             android:title="@string/vote" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Share Your Experience">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/twitter"
+                android:icon="@drawable/twitter"
+                android:title="Make a tweet" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/facebook"
+                android:icon="@drawable/facebook_icon"
+                android:title="Make a post" />
         </menu>
     </item>
 

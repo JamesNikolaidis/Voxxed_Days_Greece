@@ -1,23 +1,32 @@
 package voxxed_days_greece.voxxeddays.Screens;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -26,24 +35,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.login.widget.LoginButton;
+import com.facebook.share.widget.ShareDialog;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import voxxed_days_greece.voxxeddays.R;
+import voxxed_days_greece.voxxeddays.adapters.session_adapter;
 import voxxed_days_greece.voxxeddays.adapters.speakers_adapter;
+import voxxed_days_greece.voxxeddays.alert_dialogs.speaker_informations_dialog;
+import voxxed_days_greece.voxxeddays.api.get_sessions;
 import voxxed_days_greece.voxxeddays.api.get_speakers;
+import voxxed_days_greece.voxxeddays.general.delete_content;
+import voxxed_days_greece.voxxeddays.media.facebook;
+import voxxed_days_greece.voxxeddays.media.twitter;
 import voxxed_days_greece.voxxeddays.models.speakers;
-
+import voxxed_days_greece.voxxeddays.models.sessions;
 public class main_screen extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    TextView mStateName;
     private SharedPreferences sharedPreferences;
     private ViewFlipper mViewFlipper;
     private ScrollView scrollView;
-    private Timer mTime = new Timer();
+    private static Timer mTime = new Timer();
     private LinearLayout mRelative;
     private Button mFloatingButton;
     private TextView mWelcomeTitle=null,mWelcomeBody=null;
@@ -51,22 +75,42 @@ public class main_screen extends AppCompatActivity
     private View theView;
     private Timer checkforchanges=new Timer();
     private LinearLayout mSpeakersLayout=null;
-    private ListView mSpeaker1=null,mSpeaker2=null;
+    private ListView mSpeaker1=null,mSpeaker2=null,sessions=null;
     private get_speakers get_speakers = null;
     private ArrayList<speakers> speakerses1=new ArrayList<>(),speakerses2=new ArrayList<>();
-    private ArrayList<String> speakersPictures=new ArrayList<>();
+    private ArrayList<String> speakersPictures=new ArrayList<>(),speakersPictures2=new ArrayList<>();
     private ArrayList<String> speakersName=new ArrayList<>();
+    private ArrayList<String> sessionsName=new ArrayList<>();
     private ArrayList<String> speakersPictures1=new ArrayList<>();
     private ArrayList<String> speakersName1=new ArrayList<>();
     private speakers_adapter adapter,adapter1;
+    private session_adapter session_adapter=null;
     private  SharedPreferences.Editor editor;
+    private static int STATE_NUMBER=-1;
+    private get_sessions get_Sessions= null;
     View speaker;
-
+    public static Uri tweet_image_uri=null;
+    private static AlertDialog.Builder mBuilder;
+    private EditText tweetText = null;
+    private  ImageView user_pic;
+    private String mCurrentPath;
+    private View.OnClickListener add_images_onclick_listener=null;
+    private ShareDialog shareDialog=null;
+    public static  Bitmap  mImageBitmap;
+    private twitter twitter;
+    private facebook mFacebook;
+    public static String APPLICATION_TITLE=null;
+    private CallbackManager callbackManager;
+    public static ArrayList<sessions> mScheduleSessions=null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.setApplicationId("120326848562720");
+        FacebookSdk.sdkInitialize(this);
+        shareDialog = new ShareDialog(this);
+        Twitter.initialize(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         mActivity = this;
@@ -74,7 +118,6 @@ public class main_screen extends AppCompatActivity
         setSupportActionBar(toolbar);
         sharedPreferences = getSharedPreferences(First_Screen.STATE_SELECTION,MODE_PRIVATE);
         setTitle(R.string.app_name);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -129,7 +172,7 @@ public class main_screen extends AppCompatActivity
         changeImage();
         mWelcomeTitle = (TextView)findViewById(R.id.message_title);
         mWelcomeBody = (TextView)findViewById(R.id.message_body);
-
+        STATE_NUMBER=sharedPreferences.getInt(First_Screen.STATE_NUMBER,-1);
 
 
        BackGroundStaff backGroundStaff = new BackGroundStaff();
@@ -138,7 +181,15 @@ public class main_screen extends AppCompatActivity
 
         scrollView = (ScrollView)findViewById(R.id.scrollView);
         get_speakers = get_speakers.get_speakersObject();
+        get_Sessions= get_sessions.get_sessionObject();
         editor= sharedPreferences.edit();
+        ImageOnclickListener();
+        mScheduleSessions = new ArrayList<>();
+
+
+
+
+
     }
 
     @Override
@@ -178,22 +229,25 @@ public class main_screen extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-
         if (id == R.id.speakers) {
-            DestroyFlipperAndTimer();
+            delete_content.DestroyFlipperAndTimer(mRelative,speaker,mActivity);
             setSpeakerListViews();
             Updates();
         } else if (id == R.id.sessions) {
-            DestroyFlipperAndTimer();
+            delete_content.DestroyFlipperAndTimerForSession(R.id.sessions_linear_layout,R.layout.sessions_activity,mRelative,mActivity);
+            setSessionListViews();
         } else if (id == R.id.keynotes) {
-            DestroyFlipperAndTimer();
+            delete_content.DestroyFlipperAndTimer(mRelative,speaker,mActivity);
         } else if (id == R.id.voting) {
-            DestroyFlipperAndTimer();
-        } else if (id == R.id.nav_share) {
-            DestroyFlipperAndTimer();
-        } else if (id == R.id.nav_send) {
-            DestroyFlipperAndTimer();
+            delete_content.DestroyFlipperAndTimer(mRelative,speaker,mActivity);
+        } else if (id == R.id.twitter) {
+            delete_content.DestroyFlipperAndTimerForSession(R.id.twitter_log_in_dialog,R.layout.twitter_dialog,mRelative,mActivity);
+            setTitle("Fill your Tweet");
+            SetImageClickListener();
+        } else if (id == R.id.facebook) {
+            delete_content.DestroyFlipperAndTimerForSession(R.id.facebook_dialog_layout,R.layout.facebook_dialog,mRelative,mActivity);
+            setTitle("Fill your facebook post");
+            SetFacebookImage();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -210,21 +264,27 @@ public class main_screen extends AppCompatActivity
 
             case 0:
                 setTitle(R.string.app_name_thessaloniki);
+                APPLICATION_TITLE = getResources().getString(R.string.app_name_thessaloniki);
                 break;
             case 1:
                 setTitle(R.string.app_name_athens);
+                APPLICATION_TITLE = getResources().getString(R.string.app_name_athens);
                 break;
             case 2:
                 setTitle(R.string.app_name_volos);
+                APPLICATION_TITLE = getResources().getString(R.string.app_name_volos);
                 break;
             case 3:
                 setTitle(R.string.app_name_patra);
+                APPLICATION_TITLE = getResources().getString(R.string.app_name_patra);
                 break;
             case 4:
                 setTitle(R.string.app_name_crete);
+                APPLICATION_TITLE = getResources().getString(R.string.app_name_crete);
                 break;
             case 5:
                 setTitle(R.string.app_name_piraeus);
+                APPLICATION_TITLE = getResources().getString(R.string.app_name_piraeus);
                 break;
             default:
                 setTitle("Error");
@@ -286,23 +346,48 @@ public class main_screen extends AppCompatActivity
             },0,10000);
     }
 
-    public void DestroyFlipperAndTimer(){
-            mRelative.removeAllViews();
-            mRelative.setBackgroundColor(Color.parseColor("#867979"));
-            LayoutInflater inflater1 = LayoutInflater.from(this);
-            speaker = inflater1.inflate(R.layout.speakers,null);
-            mRelative.addView((LinearLayout)speaker.findViewById(R.id.speakers_linear_layout));
-            StopTime();
-    }
 
-    public void StopTime(){
+    //**************Delete Content
+
+//**************************************
+
+
+
+    public static void StopTime(){
         mTime.cancel();
     }
     public void ResumeTime(){mTime = new Timer();}
 
+//**********Media functions ***********************//
+//
+//    ***************
+    public void SetFacebookImage() {
+        user_pic = (ImageView) findViewById(R.id.user_facebook_image);
+        final LoginButton loginButton = (LoginButton) findViewById(R.id.facebook_login);
+        loginButton.performClick();
+        callbackManager = CallbackManager.Factory.create();
+        mFacebook = new facebook(mActivity);
+        mFacebook.SetLoginButtonCallback(loginButton,callbackManager);
+        mFacebook.SetLoginManagerLoginCallback(callbackManager,getApplicationContext());
+        mFacebook.facebook_share((Button)findViewById(R.id.facebook_share));
+        user_pic.setOnClickListener(add_images_onclick_listener);
+    }
 
 
+    public void SetImageClickListener(){
+        user_pic = (ImageView)findViewById(R.id.user_tweet_image);
+        tweetText = (EditText)findViewById(R.id.twitter_text);
+        twitter = new twitter(mActivity,tweetText,getApplicationContext());
+        TwitterLoginButton twitterLoginButton = (TwitterLoginButton)findViewById(R.id.twitter_login);
+        twitter.SetTwitterLoginButtonCallback(twitterLoginButton,getApplicationContext());
+        twitter.setOnPostTweetListener((Button)findViewById(R.id.twitter_tweet),mRelative);
+        twitterLoginButton.performClick();
+        user_pic.setOnClickListener(add_images_onclick_listener);
+    }
 
+//**********End ***********************//
+//
+//    ***************
 
 
     public class BackGroundStaff extends AsyncTask<Void,Void,Void>{
@@ -310,8 +395,13 @@ public class main_screen extends AppCompatActivity
         @Override
         protected Void doInBackground(Void... params) {
 
-            fetchData();
+            try {
+                fetchData();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
+            GetSession();
 
             if(sharedPreferences.getInt(First_Screen.STATE_NUMBER,-1)==0){
                 //is thessaloniki
@@ -385,12 +475,6 @@ public class main_screen extends AppCompatActivity
     }
 
 
-    public void check_orientation(){
-
-       // Configuration.ORIENTATION_LANDSCAPE;
-    }
-
-
 
     public void setSpeakerListViews(){
 
@@ -401,7 +485,51 @@ public class main_screen extends AppCompatActivity
         adapter1=new speakers_adapter(getApplicationContext(),speakersPictures1,speakersName1);
         mSpeaker1.setAdapter(adapter);
         mSpeaker2.setAdapter(adapter1);
+
+        mSpeaker1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                speaker_informations_dialog.create_speaker_dialog(getApplicationContext(),mActivity,((TextView)view.findViewById(R.id.speaker_name)).getText().toString());
+
+            }
+        });
+
+
+        mSpeaker2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                speaker_informations_dialog.create_speaker_dialog(getApplicationContext(),mActivity,((TextView)view.findViewById(R.id.speaker_name)).getText().toString());
+            }
+        });
         this.setTitle("Our Amazing Speakers");
+
+    }
+
+
+
+    public void setSessionListViews(){
+        sessions = (ListView) findViewById(R.id.sessions_list_view);
+
+        session_adapter=new session_adapter(getApplicationContext(),speakersPictures2,sessionsName);
+        sessions.setAdapter(session_adapter);
+
+        sessions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent goToSessionActivity = new Intent(mActivity,session_screen.class);
+                goToSessionActivity.putExtra("session_name",get_Sessions.returnSessionList().get(position).getName());
+                goToSessionActivity.putExtra("session_brief",get_Sessions.returnSessionList().get(position).getBrief());
+                goToSessionActivity.putExtra("session_time",get_Sessions.returnSessionList().get(position).getTime());
+                goToSessionActivity.putExtra("session_room",get_Sessions.returnSessionList().get(position).getRoom());
+                goToSessionActivity.putExtra("session_speaker",get_Sessions.returnSessionList().get(position).getSpeaker());
+                goToSessionActivity.putExtra("session_id",get_Sessions.returnSessionList().get(position).getId());
+                goToSessionActivity.putExtra("session_keynote",get_Sessions.returnSessionList().get(position).isKeynote());
+                mActivity.startActivity(goToSessionActivity);
+
+
+            }
+        });
+        this.setTitle("Our Amazing Sessions");
 
     }
 
@@ -409,15 +537,14 @@ public class main_screen extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        speakersName.clear();
-        speakersName1.clear();
-        speakersPictures.clear();
-        speakersPictures1.clear();
-        get_speakers.clearSpeakersList();
-        checkforchanges.cancel();
+        ClearArrays();
+        if(mTime!=null){mTime.cancel();}
+
     }
 
-    public  void fetchData(){
+
+
+    public void fetchData() throws InterruptedException {
         ArrayList<speakers> speakerses = get_speakers.returnSpeakersList();
         int counter=0;
 
@@ -434,7 +561,28 @@ public class main_screen extends AppCompatActivity
             speakersName1.add(speakerses.get(counter).getName());
             counter++;
         }
+
+        counter=0;
     }
+
+
+    public void GetSession(){
+        int counter=0;
+
+        while(counter!=get_Sessions.returnSessionList().size()){
+            sessionsName.add(get_Sessions.returnSessionList().get(counter).getName());
+            counter++;
+        }
+
+        counter=0;
+        while(counter!=get_Sessions.returnSessionList().size()){
+            speakersPictures2.add(get_speakers.ReturnSpeakerUrl(get_Sessions.returnSessionList().get(counter).getSpeaker()));
+            counter++;
+        }
+
+    }
+
+
 
 
 
@@ -447,22 +595,172 @@ public class main_screen extends AppCompatActivity
                        @Override
                        public void run() {
                            ClearArrays();
-                           fetchData();
+                           try {
+                               fetchData();
+                               GetSession();
+                           } catch (InterruptedException e) {
+                               e.printStackTrace();
+                           }
                            setSpeakerListViews();
                            editor.putInt("CHANGE_COMMIT",0).commit();
                        }
                    });
 
+
+                }else if(sharedPreferences.getInt("CHANGE_COMMIT",-1)==2) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                fetchData();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            ClearArrays();
+                                GetSession();
+                            setSessionListViews();
+                            editor.putInt("CHANGE_COMMIT", 0).commit();
+                        }
+                    });
                 }
             }
         },0,10000);
     }
 
-    public void ClearArrays(){
+    public void ClearArrays() {
         speakersName.clear();
         speakersName1.clear();
         speakersPictures.clear();
         speakersPictures1.clear();
+        sessionsName.clear();
+        speakersPictures2.clear();
     }
+
+
+
+
+
+
+
+
+    public void take_a_picture(){
+        Intent take_picture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File photoFile=null;
+        if (take_picture.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.i("The tag", "IOException");
+            }
+
+        }
+
+        take_picture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+
+        if (take_picture.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(take_picture,0);
+        }
+
+    }
+
+    public void take_a_picture_from_storage(){
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto ,1);
+
+    }
+
+
+
+
+
+    public void create_media_dialog(Activity mActivity){
+        mBuilder = new AlertDialog.Builder(mActivity);
+        mBuilder.setTitle("Which method of import do you want?");
+        mBuilder.setItems(new String[]{"From Camera?","From Storage?"}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(which==0){
+                    take_a_picture();
+                }else{
+                    take_a_picture_from_storage();
+                }
+
+            }
+        });
+        mBuilder.create().show();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case 0:
+                if(resultCode == RESULT_OK){
+                    try {
+                        mImageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPath));
+                        tweet_image_uri = Uri.parse(mCurrentPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    user_pic.setImageBitmap(mImageBitmap);
+                }
+
+                break;
+            case 1:
+                if(resultCode == RESULT_OK){
+                    tweet_image_uri = data.getData();
+                    Uri imageUri = data.getData();
+                    try {
+                        mImageBitmap= MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        user_pic.setImageBitmap(mImageBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+
+        }
+
+
+
+
+    }
+
+
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  // prefix
+                ".jpg",         // suffix
+                storageDir      // directory
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
+
+    public void ImageOnclickListener(){
+        add_images_onclick_listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                create_media_dialog(mActivity);
+            }
+
+        };
+    }
+
+
 
 }

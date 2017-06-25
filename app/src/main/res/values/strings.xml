@@ -1,7 +1,13 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
     <string name="app_name">Voxxed Days</string>
     <string name="app_name_thessaloniki">Voxxed Days Thessaloniki</string>
     <string name="app_name_athens">Voxxed Days Athens</string>
+    <string name="app_name_volos">Voxxed Days Volos</string>
+    <string name="app_name_piraeus">Voxxed Days Piraeus</string>
+    <string name="app_name_patra">Voxxed Days Patra</string>
+    <string name="app_name_crete">Voxxed Days Crete</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -13,8 +19,38 @@
     <string name="speakers">Speakers</string>
     <string name="sessions">Sessions</string>
     <string name="keynote">Keynotes</string>
+    <string name="schedule">My-Schedule</string>
     <string name="vote">Voting</string>
+    <string name="select_state">Select State</string>
+    <string-array name="State_List">
+        <item>Thessaloniki</item>
+        <item>Athens</item>
+        <item>Volos</item>
+        <item>Patra</item>
+        <item>Crete</item>
+        <item>Piraeus</item>
+    </string-array>
+
+    <string name="state_thessaloniki_welocome">
+         Welcome to Voxxed Days of Thessaloniki
+    </string>
+
+    <string name="state_athens_welcome">
+         Welcome to Voxxed Days of Athens
+    </string>
 
 
 
+    <string name="thessaloniki_welcome_message">
+     The Voxxed Days of Thessaloniki is organized for two years in a row in the Thessaloniki.Thessaloniki has a number of great museums , status and sights with the most popular the White Tower.\nFor more information About Thessaloniki you can find at thessaloniki.com.
+From the menu on the left you can navigate to the applications features
+    </string>
+
+    <string name="athens_welcome_message">
+       The Voxxed Days of Athens is organized for two years in a row in the Athens.Athens has a number of great museums , status and sights with the most popular the Acropolis.\nFor more information About Athens you can find at Athens.com.
+From the menu on the left you can navigate to the applications features.
+    </string>
+
+        <string name="com.twitter.sdk.android.CONSUMER_KEY">N6sXBrBTJQ7xlq9TxDuoaawcG</string>
+        <string name="com.twitter.sdk.android.CONSUMER_SECRET">WoomIqZFgdwg1vInEyvyarsd44OGiswOYTxFyZCG1jGFAUNYBT</string>
 </resources>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/twitter_log_in_dialog"
+
+    >
+
+
+    <ImageView
+        android:id="@+id/user_tweet_image"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+
+        android:src="@drawable/add_picture_via_camera" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add your tweet text:"
+        android:textSize="25sp"
+
+        />
+<EditText
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:textSize="20sp"
+    android:paddingLeft="5dp"
+    android:layout_marginTop="10dp"
+    android:id="@+id/twitter_text"
+    android:gravity="left|center"
+    android:background="@drawable/divide_shape"
+    android:hint="here insert your awesome #vdthess"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_width="220dp"
+            android:id="@+id/twitter_tweet"
+            android:layout_height="wrap_content"
+            android:text="Tweet"
+            android:textSize="20sp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:background="@drawable/tweet_shape"/>
+        <com.twitter.sdk.android.core.identity.TwitterLoginButton
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible"
+            android:id="@+id/twitter_login"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

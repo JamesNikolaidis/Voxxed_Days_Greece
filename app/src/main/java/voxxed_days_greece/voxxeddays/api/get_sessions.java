@@ -23,7 +23,7 @@ import voxxed_days_greece.voxxeddays.models.speakers;
 public class get_sessions {
 
     private DatabaseReference mFirebaseDatabase=null;
-    private ArrayList<sessions> sessionList = null;
+    private ArrayList<sessions> sessionList = null,mKeynotesSessions=null;
     private Query getSession=null;
     private static get_sessions get_sessions = null;
     private ChildEventListener mSessionEventListener=null;
@@ -36,25 +36,25 @@ public class get_sessions {
     public  get_sessions(){
         this.mFirebaseDatabase = initialize_database.returnDatabaseObject();
         sessionList = new ArrayList<>();
+        mKeynotesSessions = new ArrayList<>();
         mSessionEventListener= new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                sessionList.add(dataSnapshot.getValue(sessions.class));
-                editor.putInt("CHANGE_COMMIT",2).commit();
+                if(dataSnapshot.getValue(sessions.class).isKeynote()){
+                    mKeynotesSessions.add(dataSnapshot.getValue(sessions.class));
+                    editor.putInt("CHANGE_COMMIT",2).commit();
+                }else{
+                    sessionList.add(dataSnapshot.getValue(sessions.class));
+                    editor.putInt("CHANGE_COMMIT",2).commit();
+                }
+
+
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                while(sessionList.get(counter).id!=dataSnapshot.getValue(speakers.class).id){
-                    counter++;
-                }
-                sessionList.remove(counter);
-                sessionList.add(counter,dataSnapshot.getValue(sessions.class));
-                counter=0;
-                editor.putInt("CHANGE_COMMIT",2).commit();
             }
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
                 while(sessionList.get(counter).id!=dataSnapshot.getValue(speakers.class).id){
                     counter++;
                 }
@@ -110,7 +110,14 @@ public class get_sessions {
     public ArrayList<sessions> returnSessionList(){
         if(!sessionList.isEmpty()){return sessionList;}else{return null;}
     }
+
+    public ArrayList<sessions> returnKeynotesSessions(){
+        if(!mKeynotesSessions.isEmpty()){return mKeynotesSessions;}else{return null;}
+    }
+
+
     public  void clearSessionList(){
+        mKeynotesSessions.clear();
         sessionList.clear();
         getSession.removeEventListener(mSessionEventListener);
     }

@@ -25,7 +25,7 @@ public class session_adapter extends ArrayAdapter<String> {
 
     private ImageView mImageView=null;
     private TextView mTextView=null;
-    private ArrayList<String> mSessionImage,mSessionTitle=new ArrayList<>();
+    private ArrayList<String> mSessionImage;
 
     private Activity mActivity;
     private Context mContext;
@@ -45,7 +45,6 @@ public class session_adapter extends ArrayAdapter<String> {
         View view =  LayoutInflater.from(getContext()).inflate(R.layout.sessions,parent,false);
         mTextView = (TextView)view.findViewById(R.id.session_title);
         mImageView = (ImageView)view.findViewById(R.id.session_speaker);
-        int id = mContext.getResources().getIdentifier(getItem(position), "drawable", mContext.getPackageName());
         Drawable d = Drawable.createFromPath(get_storage_files.VOXXED_FOLDER+getItem(position)+".jpg");
         mImageView.setImageDrawable(d);
         mTextView.setText(mSessionImage.get(position));

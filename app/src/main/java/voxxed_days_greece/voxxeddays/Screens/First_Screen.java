@@ -9,7 +9,6 @@ import android.icu.text.SimpleDateFormat;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
@@ -35,9 +34,11 @@ import butterknife.OnClick;
 import voxxed_days_greece.voxxeddays.R;
 import voxxed_days_greece.voxxeddays.adapters.state_spinner;
 import voxxed_days_greece.voxxeddays.alert_dialogs.simple_spinner;
+import voxxed_days_greece.voxxeddays.api.getVenueDetails;
 import voxxed_days_greece.voxxeddays.api.get_sessions;
 import voxxed_days_greece.voxxeddays.api.get_speakers;
 import voxxed_days_greece.voxxeddays.api.get_storage_files;
+import voxxed_days_greece.voxxeddays.api.get_workshops;
 import voxxed_days_greece.voxxeddays.models.speakers;
 
 /**
@@ -57,9 +58,10 @@ public class First_Screen extends AppCompatActivity {
     public static String STATE_SELECTION="state_selection",STATE="",YEAR="";
     public static String STATE_NUMBER="state_number";
     private static Context mContext=null;
+    private get_workshops get_workshops=null;
     private GregorianCalendar gregorianCalendar;
     private get_sessions get_sessions=null;
-    private static int make_lock=0;
+    public  static int make_lock=0;
     private get_storage_files get_storage_files;
     private boolean downloadFiles=false;
     private ArrayList<speakers> speakersArray = new ArrayList<>();
@@ -87,10 +89,10 @@ public class First_Screen extends AppCompatActivity {
     public void SpinnerTextViewClick(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+        alertDialog.show();
         alertDialog.setContentView(R.layout.state_spinner_item);
         ListView listView = (ListView) alertDialog.findViewById(R.id.SpinnerListView);
-        listView.setAdapter(new state_spinner(getApplicationContext(), getResources().getStringArray(R.array.State_List), this, returnImagesId(this)));
+        listView.setAdapter(new state_spinner(getApplicationContext(), getResources().getStringArray(R.array.State_List), this, returnImagesId()));
         gregorianCalendar= new GregorianCalendar(TimeZone.getDefault());
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -120,17 +122,14 @@ public class First_Screen extends AppCompatActivity {
 
 
 
-    public  ArrayList<Drawable> returnImagesId(Activity activity){
+    public  ArrayList<Drawable> returnImagesId(){
         images.add(mActivity.getResources().getDrawable(R.drawable.white_tower));
         images.add(mActivity.getResources().getDrawable(R.drawable.acropolis_ico));
-        images.add(mActivity.getResources().getDrawable(R.drawable.volos3));
-        images.add(mActivity.getResources().getDrawable(R.drawable.patra_ico));
-        images.add(mActivity.getResources().getDrawable(R.drawable.crete_ico_v2));
-        images.add(mActivity.getResources().getDrawable(R.drawable.piraeus_ico));
         return images;
     }
 
     public void downloadSpeaker(String state,String year,String Speaker) throws IOException {
+
         get_storage_files.getSpeakersPictures(state,year,Speaker+".jpg");
     }
 
@@ -139,10 +138,14 @@ public class First_Screen extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
              speakers = get_speakers.get_speakersObject();
+             get_workshops =  get_workshops.getWorkShopObject();
              get_sessions = voxxed_days_greece.voxxeddays.api.get_sessions.get_sessionObject();
                     setTimer();
+                    get_workshops.fetchData(STATE,YEAR);
                     speakers.getSpeakersListener(STATE,YEAR);
                     get_sessions.setSessionListener(STATE,YEAR);
+                    getVenueDetails.getVenuObject().fetchVenueData(STATE,YEAR);
+
 
 
 
@@ -158,13 +161,15 @@ public class First_Screen extends AppCompatActivity {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(get_speakers.downloadFinished==true&& voxxed_days_greece.voxxeddays.api.get_sessions.downloadFinished==true){
+                if(get_speakers.downloadFinished==true&& voxxed_days_greece.voxxeddays.api.get_sessions.downloadFinished==true&&voxxed_days_greece.voxxeddays.api.get_workshops.downloadFinished==true){
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             simple_spinner.ChangeText("Download Photos(it wont take many bytes)....");
                         }
                     });
+
+                    if(!get_storage_files.FILE_EXIST){
                     speakersArray = speakers.returnSpeakersList();
                     int counter=0;
                     do{
@@ -175,10 +180,18 @@ public class First_Screen extends AppCompatActivity {
                         }
                         counter++;
                     }while (counter<speakersArray.size());
-                    nextScreen = new Intent(getApplicationContext(), main_screen.class);
-                    startActivity(nextScreen);
-                    simple_spinner.destroyAlertDialog();
-                    timer.cancel();
+                        nextScreen = new Intent(getApplicationContext(), main_screen.class);
+                        startActivity(nextScreen);
+                        simple_spinner.destroyAlertDialog();
+                        timer.cancel();
+                    }else{
+                        nextScreen = new Intent(getApplicationContext(), main_screen.class);
+                        startActivity(nextScreen);
+                        simple_spinner.destroyAlertDialog();
+                        timer.cancel();
+                    }
+
+
                 }
 
 
@@ -208,7 +221,7 @@ public class First_Screen extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        File f = new  File(Environment.getExternalStorageDirectory().getPath()+"/VoxxedGreece/");
-        deleteDirectory(f);
+       // File f = new  File(Environment.getExternalStorageDirectory().getPath()+"/VoxxedGreece/");
+       // deleteDirectory(f);
     }
 }

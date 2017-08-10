@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -8,18 +8,52 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/appBarLayout">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar1"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="46dp"
+            android:gravity="start"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_marginStart="10dp"
+                android:layout_width="33dp"
+                android:layout_height="27dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/back"
+                android:onClick="NavigateBack"
+                android:layout_alignBottom="@+id/keynote_btn" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="7dp"
+                android:background="@drawable/add_session_icon"
+                android:gravity="end"
+                android:onClick="addSessionToSchedule" />
+
+            <Button
+                android:id="@+id/keynote_btn"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_alignBaseline="@+id/button2"
+                android:layout_alignBottom="@+id/button2"
+                android:layout_marginBottom="7dp"
+                android:layout_marginEnd="13dp"
+                android:layout_toStartOf="@+id/button2"
+                android:background="@drawable/lecture"
+                android:gravity="end"
+                android:onClick="isKeynote" />
+        </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>
     <TextView
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/session_title"
@@ -27,10 +61,15 @@
         android:padding="10dp"
         android:gravity="center"
         android:textColor="@color/colorPrimary"
-        android:textSize="25dp"/>
+        android:textSize="25dp"
+        android:layout_below="@+id/appBarLayout"
+        android:layout_alignParentStart="true" />
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_below="@+id/session_title"
+    android:layout_alignParentStart="true"
+    android:layout_marginTop="33dp">
     <LinearLayout
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
@@ -134,4 +173,4 @@
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
-</LinearLayout>
+</RelativeLayout>

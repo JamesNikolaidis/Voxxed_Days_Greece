@@ -13,7 +13,6 @@
         <ImageView
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:src="@drawable/piraeus_ico"
             android:id="@+id/choose_state_image"/>
         <CheckedTextView
             android:layout_gravity="center"
@@ -23,8 +22,6 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="10dp"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:checked="false"
             android:text="CheckedTextView"
             android:textColor="@android:color/black"
             android:textSize="22sp" />

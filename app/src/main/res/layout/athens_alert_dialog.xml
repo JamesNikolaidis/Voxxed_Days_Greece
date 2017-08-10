@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="top|left"
     android:padding="5dp"
-    android:background="@drawable/layout_shape"
+    android:background="@drawable/state_error_layout_shape"
     >
 
 

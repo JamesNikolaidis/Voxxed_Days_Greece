@@ -3,8 +3,8 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    android:weightSum="1">
+    android:layout_marginBottom="7dp"
+    >
 
     <ImageView
         android:layout_width="100dp"
@@ -22,8 +22,10 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="70dp"
-        android:layout_height="match_parent"
-        android:src="@drawable/arrow"/>
+        android:layout_width="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="end|center"
+        android:layout_height="20dp"
+        android:src="@drawable/right_arrow"/>
 
 </LinearLayout>

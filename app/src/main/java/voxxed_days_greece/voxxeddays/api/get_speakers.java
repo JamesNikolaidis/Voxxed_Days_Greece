@@ -128,4 +128,19 @@ public class get_speakers {
     }
 
 
+    public speakers getSpeakerById(int id){
+        int counter=0;
+        while(counter!=mSpeakersList.size()){
+            if(mSpeakersList.get(counter).id==id){
+                return mSpeakersList.get(counter);
+            }else{
+                counter++;
+            }
+        }
+
+        return null;
+    }
+
+
+
 }

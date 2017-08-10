@@ -24,6 +24,6 @@
     <stroke
         android:width="2dp"
 
-        android:color="?attr/colorPrimary"
+        android:color="@android:color/holo_blue_dark"
         />
 </shape>

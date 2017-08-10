@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,12 +36,18 @@ public class get_storage_files {
     private static Activity activity;
     private static boolean mkDir = false;
     public static String VOXXED_FOLDER;
+    private final static  File check = new File(Environment.getExternalStorageDirectory().getPath()+"/VoxxedGreece");
+    public  static boolean FILE_EXIST = false;
 
 
 
     public static get_storage_files returnStorageObject(Activity mActivity,String State,String Year){
         activity = mActivity;
-        if(storage_files==null){
+
+
+
+
+        if(storage_files==null && !check.exists()){
             File createVoxxeDays = new File(Environment.getExternalStorageDirectory().getPath()+"/VoxxedGreece");
             mkDir=createVoxxeDays.mkdir();
             createVoxxeDays = new File(Environment.getExternalStorageDirectory().getPath()+"/VoxxedGreece/"+State);
@@ -50,12 +55,20 @@ public class get_storage_files {
             createVoxxeDays = new File(Environment.getExternalStorageDirectory().getPath()+"/VoxxedGreece/"+State+"/"+Year);
             createVoxxeDays.mkdir();
             VOXXED_FOLDER = Environment.getExternalStorageDirectory().getPath()+"/VoxxedGreece/"+State+"/"+Year+"/";
-
-            Log.e("fsdfdf",String.valueOf(mkDir));
             storage_files= new get_storage_files();
             return storage_files;
+        }else if(storage_files==null && check.exists()){
+            VOXXED_FOLDER =  Environment.getExternalStorageDirectory().getPath()+"/VoxxedGreece/"+State+"/"+Year+"/";
+            storage_files= new get_storage_files();
+            FILE_EXIST = true;
+            return  storage_files;
+        }else{
+            return  storage_files;
         }
-        else{return  storage_files;}
+
+
+
+
     }
 
     public get_storage_files(){mStorageObject = FirebaseStorage.getInstance().getReference();
@@ -63,37 +76,39 @@ public class get_storage_files {
     }
 
     public void  getSpeakersPictures(final String State , final String Year, final String name) throws IOException {
-        mSpeakerPictures = FirebaseStorage.getInstance().getReference().child(State).child(Year).child("Speakers").child(name);
-        final long BYTES = 1024 * 1024;
-       if(mkDir){
-        mSpeakerPictures.getBytes(BYTES).addOnCompleteListener(new OnCompleteListener<byte[]>() {
-            @Override
-            public void onComplete(@NonNull Task<byte[]> task) {
-                byte[] picturesBytes = task.getResult();
-                String file_path = VOXXED_FOLDER+name;
-                File speaker_picture = new File(file_path);
-                BufferedOutputStream bufferedWriter=null;
-                try {
-                     bufferedWriter = new BufferedOutputStream(new FileOutputStream(speaker_picture));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    bufferedWriter.write(picturesBytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-                try {
-                    bufferedWriter.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            mSpeakerPictures = FirebaseStorage.getInstance().getReference().child(State).child(Year).child("Speakers").child(name);
+            final long BYTES = 1024 * 1024;
+            if (mkDir) {
+                mSpeakerPictures.getBytes(BYTES).addOnCompleteListener(new OnCompleteListener<byte[]>() {
+                    @Override
+                    public void onComplete(@NonNull Task<byte[]> task) {
+                        byte[] picturesBytes = task.getResult();
+                        String file_path = VOXXED_FOLDER + name;
+                        File speaker_picture = new File(file_path);
+                        BufferedOutputStream bufferedWriter = null;
+                        try {
+                            bufferedWriter = new BufferedOutputStream(new FileOutputStream(speaker_picture));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            bufferedWriter.write(picturesBytes);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        try {
+                            bufferedWriter.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                });
             }
+        }
 
-        });
-       }
-    }
 
 
 }

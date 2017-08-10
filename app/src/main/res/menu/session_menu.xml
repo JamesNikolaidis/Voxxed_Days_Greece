@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/back_button_png"
+        android:icon="@drawable/back"
+        android:title="Back"
+        app:showAsAction="always" />
     <item
         android:id="@+id/add_to_schedule"
         android:orderInCategory="100"
         android:title="Add to Schedule"
-        android:icon="@drawable/add_session_icon"
         app:showAsAction="never" />
     <item
 
         android:id="@+id/keynote"
         android:orderInCategory="100"
-        android:icon="@drawable/keynote"
         app:showAsAction="never"
         android:title="Keynote Information" />
 </menu>

@@ -23,7 +23,7 @@ public class simple_spinner {
         alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         alertDialog.show();
-        alertDialog.setCancelable(false);
+       // alertDialog.setCancelable(false);
         alertDialog.setContentView(R.layout.spinner_layout);
         mSpinnerText = (TextView)alertDialog.findViewById(R.id.textView);
 

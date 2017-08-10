@@ -33,7 +33,14 @@ public class delete_content {
         mRelative.addView((LinearLayout)speaker.findViewById(id));
         StopTime();
     }
-
+    public static void DestroyFlipperAndTimerForSession_vol2(int id,int layout,LinearLayout mRelative,Activity mActivity){
+        mRelative.removeAllViews();
+        LayoutInflater inflater1 = LayoutInflater.from(mActivity);
+        mRelative.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        View speaker = inflater1.inflate(layout,null);
+        mRelative.addView((LinearLayout)speaker.findViewById(id));
+        StopTime();
+    }
 
 
 }

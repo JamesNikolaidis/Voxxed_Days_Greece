@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ public class speakers_adapter extends ArrayAdapter<String> {
         View view =  LayoutInflater.from(getContext()).inflate(R.layout.speaker_item,parent,false);
         mTextView = (TextView)view.findViewById(R.id.speaker_name);
         mImageView = (ImageView)view.findViewById(R.id.speaker_picture);
+        Log.e("data","Here");
         Drawable d = Drawable.createFromPath(get_storage_files.VOXXED_FOLDER+getItem(position)+".jpg");
         mImageView.setImageDrawable(d);
         mTextView.setText(mSpeakerName.get(position));

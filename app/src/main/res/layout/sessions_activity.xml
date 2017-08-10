@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/sessions_linear_layout">
+    android:layout_height="wrap_content"
+    android:id="@+id/sessions_linear_layout"
+    >
 
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="KEYNOTES"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:layout_marginBottom="5dp"/>
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/sessions_list_view"></ListView>
+        android:layout_height="300dp"
+        android:id="@+id/sessions_keynote_list_view"/>
+
+
+    <TextView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TALKS"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="10dp"/>
+    <ListView
+        android:id="@+id/sessions_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

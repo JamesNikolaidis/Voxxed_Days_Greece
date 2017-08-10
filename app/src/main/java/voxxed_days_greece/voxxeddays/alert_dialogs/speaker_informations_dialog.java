@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,7 +57,6 @@ public class speaker_informations_dialog {
         int counter=0;
 
         do{
-            Log.e("THENAME",(the_speaker.get(counter).getName()));
             if(the_speaker.get(counter).getName().matches(speaker_name)){
 
                 return the_speaker.get(counter);
@@ -67,6 +65,10 @@ public class speaker_informations_dialog {
         }while(counter!=the_speaker.size());
 
         return null;
+    }
+
+    public static void destroyItem(){
+        speaker_alert_dialog.cancel();
     }
 
 

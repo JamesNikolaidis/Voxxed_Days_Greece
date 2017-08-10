@@ -15,13 +15,19 @@
             android:icon="@drawable/sc"
             android:title="@string/schedule" />
         <item
-            android:id="@+id/keynotes"
-            android:icon="@drawable/keynotes"
-            android:title="@string/keynote" />
-        <item
             android:id="@+id/voting"
             android:icon="@drawable/vote"
             android:title="@string/vote" />
+        <item
+            android:id="@+id/workshops"
+            android:icon="@drawable/workshops"
+            android:title="@string/workshopes"/>
+        <item
+            android:icon="@drawable/info"
+            android:title="About"
+            android:id="@+id/app_info">
+
+        </item>
     </group>
 
     <item android:title="Share Your Experience">
@@ -34,6 +40,10 @@
                 android:id="@+id/facebook"
                 android:icon="@drawable/facebook_icon"
                 android:title="Make a post" />
+            <item
+                android:id="@+id/app_like"
+                android:icon="@drawable/like"
+                android:title="Give us a Thumb" />
         </menu>
     </item>
 
